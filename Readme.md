@@ -11,7 +11,7 @@ This repository contains the eight datasets used in the MCviz paper. Each datase
 | BibSonomy | [BibSonomy.txt](BibSonomy.txt) | 3 | 977,914 | 3,754,828 | User, Tag, Item |
 | Freebase | [Freebase.txt](Freebase.txt) | 6 | 1,669,251 | 2,536,415 | Genre, Group, Composer, Musician, Artist, Album |
 | YouTube | [YouTube.txt](YouTube.txt) | 32 | 1,116,052 | 2,894,183 | Constructed user partitions |
-| AMiner | [AMiner.txt.gz](AMiner.txt.gz) | 3 | 4,891,819 | 12,518,010 | Author, Paper, Venue |
+| AMiner | [AMiner.txt](AMiner.txt) | 3 | 4,891,819 | 12,518,010 | Author, Paper, Venue |
 
 ## Data Format and Use
 
@@ -23,17 +23,7 @@ layer_u vertex_id_u layer_v vertex_id_v
 
 Layers are numbered from zero. A vertex is identified by its layer and vertex ID; IDs need not be contiguous. Lines beginning with `#` are comments. Edges are undirected, and original relation labels and directions are omitted. Isolated vertices do not appear in an edge list.
 
-`AMiner.txt.gz` is compressed to fit GitHub's ordinary Git file-size limit. Decompress it before passing it to a program that expects a plain-text file:
-
-```bash
-gzip -dk AMiner.txt.gz
-```
-
-The command creates `AMiner.txt` and keeps the archive. The other seven datasets are uncompressed. Verify the distributed files with the checksums in [SHA256SUMS](SHA256SUMS):
-
-```bash
-sha256sum -c SHA256SUMS
-```
+`AMiner.txt.gz` is also retained as a compressed copy of `AMiner.txt`.
 
 ## Sources and Processing
 
@@ -54,8 +44,10 @@ For WordNet, Hetionet, DRKG, Freebase, and YouTube, the full graphs retain cross
 
 The main comparison uses the full datasets above, with restricted domains for WordNet and AMiner. The accompanying pattern files define the WordNet path and DRKG tree used in the paper.
 
-- **WordNet-P3:** [wordnet-p3.txt](wordnet-p3.txt) contains the complete projection of WordNet layers 12, 13, and 14, renumbered 0, 1, and 2. It has 2,696 vertices and 1,685 edges, including 21 edges outside the path pattern. Load [metadata/wordnet-p3.vertices.tsv](metadata/wordnet-p3.vertices.tsv) as the explicit vertex domain to retain isolated vertices. The path is defined in [patterns/wordnet-p3.pattern](patterns/wordnet-p3.pattern).
+[patterns/WordNet.pattern](patterns/WordNet.pattern) records the path `12--13--14` using the original zero-based layer IDs in `WordNet.txt`. The paper restricts the vertex domain to these three layers; applying this pattern to all 25 layers does not reproduce that workload. After projecting and renumbering these layers to `0, 1, 2`, use `patterns/WordNet-P3.pattern` instead.
+
+- **WordNet-P3:** [WordNet-P3.txt](WordNet-P3.txt) contains the complete projection of WordNet layers 12, 13, and 14, renumbered 0, 1, and 2. It has 2,696 vertices and 1,685 edges, including 21 edges outside the path pattern. Load [metadata/WordNet-P3.vertices.tsv](metadata/WordNet-P3.vertices.tsv) as the explicit vertex domain to retain isolated vertices. The path is defined in [patterns/WordNet-P3.pattern](patterns/WordNet-P3.pattern).
 - **AMiner-AP:** Retain the Author and Paper layers and their edges from `AMiner.txt`. This domain has 4,887,936 vertices and 9,323,605 edges.
-- **DRKG:** [patterns/drkg-tree.pattern](patterns/drkg-tree.pattern) defines the tree with edges `(0,2)`, `(0,3)`, `(0,4)`, and `(1,4)`. The search anchor does not change the pattern.
+- **DRKG:** [patterns/DRKG-tree.pattern](patterns/DRKG-tree.pattern) defines the tree with edges `(0,2)`, `(0,3)`, `(0,4)`, and `(1,4)`. The search anchor does not change the pattern.
 
 See the MCviz paper for the other patterns and experimental settings.
