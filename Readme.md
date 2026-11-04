@@ -11,7 +11,7 @@ This repository contains the eight datasets used in the MCviz paper. Each datase
 | BibSonomy | [BibSonomy.txt](BibSonomy.txt) | 3 | 977,914 | 3,754,828 | User, Tag, Item |
 | Freebase | [Freebase.txt](Freebase.txt) | 6 | 1,669,251 | 2,536,415 | Genre, Group, Composer, Musician, Artist, Album |
 | YouTube | [YouTube.txt](YouTube.txt) | 32 | 1,116,052 | 2,894,183 | Constructed user partitions |
-| AMiner | [AMiner.txt](AMiner.txt) | 3 | 4,891,819 | 12,518,010 | Author, Paper, Venue |
+| AMiner | [AMiner.txt.gz](AMiner.txt.gz) | 3 | 4,891,819 | 12,518,010 | Author, Paper, Venue |
 
 ## Data Format and Use
 
@@ -23,7 +23,13 @@ layer_u vertex_id_u layer_v vertex_id_v
 
 Layers are numbered from zero. A vertex is identified by its layer and vertex ID; IDs need not be contiguous. Lines beginning with `#` are comments. Edges are undirected, and original relation labels and directions are omitted. Isolated vertices do not appear in an edge list.
 
-`AMiner.txt.gz` is also retained as a compressed copy of `AMiner.txt`.
+AMiner is distributed as `AMiner.txt.gz`; the uncompressed `AMiner.txt` is omitted from GitHub because of its size. From the repository root, extract it while keeping the compressed file:
+
+```bash
+gzip -dk AMiner.txt.gz
+```
+
+Use the resulting `AMiner.txt` as the graph input.
 
 ## Sources and Processing
 
